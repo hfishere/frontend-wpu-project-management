@@ -1,34 +1,19 @@
-import { Box, Button } from '@mui/material';
-import { useState } from 'react';
+import { colors, Paper, Typography } from '@mui/material';
 
-import Modal from '../../ui/Modal';
+import SidebarLayout from '../../layouts/SidebarLayout';
 
 const Dashboard = () => {
-  const [openModal, setOpenModal] = useState();
-
-  const handleOpen = () => {
-    setOpenModal(true);
-  };
-  const handleClose = () => {
-    setOpenModal(false);
-  };
-
   return (
-    <Box>
-      <Button type="button" variant="contained" onClick={handleOpen}>
-        Open Modal
-      </Button>
-      <Modal open={openModal} handleClose={handleClose} title={'Judul Modal'}>
-        <Box
-          sx={{
-            padding: 2,
-            width: 500,
-          }}
-        >
-          Isi modal
-        </Box>
-      </Modal>
-    </Box>
+    <SidebarLayout pageTitle="Dashboard">
+      <Paper
+        sx={{
+          padding: 2,
+          background: colors.lightBlue[100],
+        }}
+      >
+        <Typography>Menampilkan dashboard di sini</Typography>
+      </Paper>
+    </SidebarLayout>
   );
 };
 
