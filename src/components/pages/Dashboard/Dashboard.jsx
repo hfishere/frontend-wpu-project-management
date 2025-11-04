@@ -1,6 +1,6 @@
 import { colors, Paper, Typography } from '@mui/material';
 
-import SidebarLayout from '../../layouts/SidebarLayout';
+import SidebarLayout from '@/components/layouts/SidebarLayout';
 
 const Dashboard = () => {
   return (
