@@ -44,6 +44,8 @@ const Avatar = ({ text, onClick }) => {
   const handlePopoverOpen = (e) => setAnchorEl(e.currentTarget);
   const handlePopoverClose = () => setAnchorEl(null);
 
+  const open = Boolean(anchorEl);
+
   return (
     <>
       <BaseAvatar
