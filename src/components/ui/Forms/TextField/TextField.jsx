@@ -25,8 +25,8 @@ const TextField = ({
               {...props}
               fullWidth
               label={label}
-              varian="outlined"
-              value={value}
+              variant="outlined"
+              value={value ?? ''}
               onBlur={onBlur}
               onChange={onChange}
               helperText={helperText}
