@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
 
+import ModalAddNewProject from './Modals/ModalAddNewProject';
+
 import SidebarLayout from '@/components/layouts/SidebarLayout';
 import TextField from '@/components/ui/Forms/TextField';
 import Pagination from '@/components/ui/Pagination';
@@ -16,6 +18,8 @@ const Projects = () => {
   const [boardsMeta, setBoardsMeta] = useState({});
   const [page, setPage] = useState(1);
 
+  const [openModalAddNewProject, setOpenModalAddNewProject] = useState(false);
+
   const { control } = useForm({
     defaultValues: {
       search: '',
@@ -28,6 +32,9 @@ const Projects = () => {
   });
 
   const [debounceSearch] = useDebounce(watchSearch, 1000);
+
+  const handleOpenModalAddNewProject = () => setOpenModalAddNewProject(true);
+  const handleCloseModalAddNewProject = () => setOpenModalAddNewProject(false);
 
   useEffect(() => {
     const fetchBoardsData = async () => {
@@ -46,68 +53,87 @@ const Projects = () => {
   }, [debounceSearch, page]); // onMounted
 
   return (
-    <SidebarLayout
-      pageTitle="Projects"
-      breadcrumbs={[
-        {
-          label: 'Daftar Proyek',
-        },
-      ]}
-    >
-      <Stack>
-        <Box>
-          <TextField
-            control={control}
-            label={'Cari nama proyek'}
-            id="search"
-            name={'search'}
-            size="small"
-          />
-        </Box>
-      </Stack>
-      <Table
-        isLoading={isLoading}
-        data={boardsData}
-        columns={[
+    <>
+      <SidebarLayout
+        pageTitle="Projects"
+        breadcrumbs={[
           {
-            id: 'title',
-            label: 'Nama proyek',
-          },
-          {
-            id: 'description',
-            label: 'Deskripsi',
-          },
-          {
-            id: 'date',
-            label: 'Tanggal dibuat',
-            render(data) {
-              return (
-                <Box>{datetime.format(data.created_at, 'DD/MM/YYYY')}</Box>
-              );
-            },
-          },
-          {
-            id: 'action',
-            label: 'Aksi',
-            render(data) {
-              return (
-                <Link to={`/projects/${data.public_id}`}>
-                  <Button key={'action'} type="button" variant="outlined">
-                    Detail proyek
-                  </Button>
-                </Link>
-              );
-            },
+            label: 'Daftar Proyek',
           },
         ]}
+      >
+        <Stack
+          direction={'row'}
+          justifyContent={'space-between'}
+          alignItems={'center'}
+        >
+          <Box>
+            <TextField
+              control={control}
+              label={'Cari nama proyek'}
+              id="search"
+              name={'search'}
+              size="small"
+            />
+          </Box>
+          <Box>
+            <Button
+              type="button"
+              variant="contained"
+              onClick={handleOpenModalAddNewProject}
+            >
+              Buat proyek baru
+            </Button>
+          </Box>
+        </Stack>
+        <Table
+          isLoading={isLoading}
+          data={boardsData}
+          columns={[
+            {
+              id: 'title',
+              label: 'Nama proyek',
+            },
+            {
+              id: 'description',
+              label: 'Deskripsi',
+            },
+            {
+              id: 'date',
+              label: 'Tanggal dibuat',
+              render(data) {
+                return (
+                  <Box>{datetime.format(data.created_at, 'DD/MM/YYYY')}</Box>
+                );
+              },
+            },
+            {
+              id: 'action',
+              label: 'Aksi',
+              render(data) {
+                return (
+                  <Link to={`/projects/${data.public_id}`}>
+                    <Button key={'action'} type="button" variant="outlined">
+                      Detail proyek
+                    </Button>
+                  </Link>
+                );
+              },
+            },
+          ]}
+        />
+        <Pagination
+          count={boardsMeta.total_page}
+          onChange={(event, page) => {
+            setPage(page);
+          }}
+        />
+      </SidebarLayout>
+      <ModalAddNewProject
+        open={openModalAddNewProject}
+        handleClose={handleCloseModalAddNewProject}
       />
-      <Pagination
-        count={boardsMeta.total_page}
-        onChange={(event, page) => {
-          setPage(page);
-        }}
-      />
-    </SidebarLayout>
+    </>
   );
 };
 
