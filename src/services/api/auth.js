@@ -5,7 +5,9 @@ const auth = {
     return network.post('/auth/login', payload);
   },
 
-  // signup
+  signUp(payload) {
+    return network.post('/auth/register', payload)
+  }
 };
 
 export default auth;

@@ -8,29 +8,34 @@ import * as Yup from 'yup';
 import AuthLayout from '@/components/layouts/AuthLayout';
 import TextField from '@/components/ui/Forms/TextField';
 import services from '@/services';
-import session from '@/utils/session';
 
-const loginSchema = Yup.object({
+const signUpSchema = Yup.object({
+  name: Yup.string().required('Nama harus di isi'),
   email: Yup.string()
     .required('Email harus di isi')
     .email('Format email tidak valid'),
   password: Yup.string().required('Password harus di isi'),
+  confirmPassword: Yup.string()
+    .required('Konfirmasi password harus di isi')
+    .oneOf(
+      [Yup.ref('password'), null],
+      'Konfirmasi password harus sama dengan password',
+    ),
 });
 
-const Login = () => {
+const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const { control, handleSubmit } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(signUpSchema),
   });
 
   const onSubmit = async (formValues) => {
     setLoading(true);
     try {
-      const response = await services.auth.login(formValues);
-      session.setSession(response.data.data.access_token);
-      navigate('/');
+      await services.auth.signUp(formValues);
+      navigate('/login');
     } catch (error) {
       console.error('login gagal:', error);
     } finally {
@@ -52,7 +57,7 @@ const Login = () => {
           align="center"
           marginBottom={2}
         >
-          Masuk
+          Daftar Baru
         </Typography>
         <Stack
           flexDirection={'column'}
@@ -60,6 +65,7 @@ const Login = () => {
           component={'form'}
           onSubmit={handleSubmit(onSubmit)}
         >
+          <TextField id={'name'} label={'Nama'} control={control} name="name" />
           <TextField
             id={'email'}
             label={'Email'}
@@ -73,18 +79,25 @@ const Login = () => {
             name="password"
             secureText
           />
+          <TextField
+            id={'confirmPassword'}
+            label={'Konfirmasi Password'}
+            control={control}
+            name="confirmPassword"
+            secureText
+          />
           <Button type="submit" variant="contained" loading={loading} fullWidth>
-            Masuk ke Akun Anda
+            Buat akun baru
           </Button>
           <Button
             type="button"
             variant="text"
             onClick={() => {
-              navigate('/signup');
+              navigate('/login');
             }}
             fullWidth
           >
-            Daftar baru
+            Sudah punya akun? Login sekarang
           </Button>
         </Stack>
       </Paper>
@@ -92,4 +105,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
