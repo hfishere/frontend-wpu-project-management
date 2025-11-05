@@ -1,13 +1,7 @@
 import { Snackbar } from '@mui/material';
-import { createContext, useState } from 'react';
+import { useState } from 'react';
 
-const defaultState = {
-  open: false,
-  message: '',
-  toggleSnackbar() {},
-};
-
-export const SnackbarContext = createContext(defaultState);
+import { SnackbarContext } from './SnackbarContextObject';
 
 const SnackbarProvider = ({ children }) => {
   const [snackbarData, setSnackbarData] = useState({

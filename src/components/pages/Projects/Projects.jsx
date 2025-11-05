@@ -1,5 +1,5 @@
 import { Box, Button, Link, Stack } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
 
@@ -33,24 +33,27 @@ const Projects = () => {
 
   const [debounceSearch] = useDebounce(watchSearch, 1000);
 
-  const handleOpenModalAddNewProject = () => setOpenModalAddNewProject(true);
-  const handleCloseModalAddNewProject = () => setOpenModalAddNewProject(false);
+  const fetchBoardsData = useCallback(async () => {
+    setLoading(true);
+    const response = await services.boards.myBoards({
+      filter: debounceSearch,
+      limit: 10,
+      page: page,
+    });
+    setBoardsData(response.data.data);
+    setBoardsMeta(response.data.meta);
+    setLoading(false);
+  }, [debounceSearch, page]);
 
   useEffect(() => {
-    const fetchBoardsData = async () => {
-      setLoading(true);
-      const response = await services.boards.myBoards({
-        filter: debounceSearch,
-        limit: 10,
-        page: page,
-      });
-      setBoardsData(response.data.data);
-      setBoardsMeta(response.data.meta);
-      setLoading(false);
-    };
-
     fetchBoardsData();
-  }, [debounceSearch, page]); // onMounted
+  }, [fetchBoardsData]);
+
+  const handleOpenModalAddNewProject = () => setOpenModalAddNewProject(true);
+  const handleCloseModalAddNewProject = async () => {
+    await fetchBoardsData();
+    setOpenModalAddNewProject(false);
+  };
 
   return (
     <>
