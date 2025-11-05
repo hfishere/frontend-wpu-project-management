@@ -1,63 +1,62 @@
-import { Paper, Stack } from '@mui/material';
-import dayjs from 'dayjs';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
-import DatePicker from '@/components/ui/Forms/DatePicker';
-import Select from '@/components/ui/Forms/Select';
+import AuthLayout from '@/components/layouts/AuthLayout';
 import TextField from '@/components/ui/Forms/TextField';
+import session from '@/utils/session';
 
 const Login = () => {
-  const { control, watch } = useForm({
-    defaultValues: {
-      filterDate: dayjs(),
-      category: '1',
-    },
-  });
+  const navigate = useNavigate();
 
-  const username = watch('username');
-  const category = watch('category');
-  const filterDate = watch('filterDate');
+  const { control, handleSubmit } = useForm();
 
-  console.log(username);
-  console.log(category);
-  console.log(filterDate);
+  const onSubmit = (formValues) => {
+    console.log('Login data:', formValues);
+    session.setSession('dummy-token');
+    navigate('/');
+  };
 
   return (
-    <Stack
-      spacing={2}
-      alignItems={'center'}
-      justifyContent={'center'}
-      height={'100vh'}
-    >
+    <AuthLayout>
       <Paper
         sx={{
-          width: 600,
-          padding: 2,
+          p: 2,
+          width: 500,
         }}
       >
-        <DatePicker name="filterDate" control={control} label="Pilih Tanggal" />
-        <TextField name={'username'} control={control} label={'Username'} />
-        <Select
-          name={'category'}
-          control={control}
-          label={'Pilih kategori'}
-          options={[
-            {
-              value: '1',
-              label: 'Kategori 1',
-            },
-            {
-              value: '2',
-              label: 'Kategori 2',
-            },
-            {
-              value: '3',
-              label: 'Kategori 3',
-            },
-          ]}
-        />
+        <Typography
+          variant="h5"
+          component={'h1'}
+          align="center"
+          marginBottom={2}
+        >
+          Masuk
+        </Typography>
+        <Stack
+          flexDirection={'column'}
+          gap={1}
+          component={'form'}
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <TextField label={'Email'} control={control} name="email" />
+          <TextField label={'Password'} control={control} name="password" />
+          <Button type="submit" variant="contained" fullWidth>
+            Masuk ke Akun Anda
+          </Button>
+          <Button
+            type="button"
+            variant="text"
+            onClick={() => {
+              navigate('/signup');
+            }}
+            fullWidth
+          >
+            Daftar baru
+          </Button>
+        </Stack>
       </Paper>
-    </Stack>
+    </AuthLayout>
   );
 };
 
