@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import DatePicker from '@/components/ui/Forms/DatePicker';
 import TextField from '@/components/ui/Forms/TextField';
 import Modal from '@/components/ui/Modal';
+import { useSnackbar } from '@/components/ui/Snackbar';
 import services from '@/services';
 import datetime from '@/utils/datetime';
 
@@ -19,6 +20,9 @@ const addNewProjectSchema = Yup.object({
 
 const ModalAddNewProject = ({ open, handleClose }) => {
   const [isLoading, setLoading] = useState(false);
+
+  const snackbar = useSnackbar();
+
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       title: '',
@@ -35,6 +39,8 @@ const ModalAddNewProject = ({ open, handleClose }) => {
       ...values,
       due_date: datetime.getIsoString(values.due_date),
     });
+
+    snackbar.toggleSnackbar(true, 'Berhasil membuat project baru!');
 
     setLoading(false);
     reset();
