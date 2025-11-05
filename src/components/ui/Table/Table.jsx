@@ -27,18 +27,20 @@ const Table = ({ columns, data }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              {columns.map((column) => (
-                <TableCell key={column.id} align={column.align || 'left'}>
-                  {column.render ? column.render(row) : row[column.id]}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
+          {data.map((row) => {
+            return (
+              <TableRow
+                key={row.public_id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                {columns.map((column) => (
+                  <TableCell key={column.id} align={column.align || 'left'}>
+                    {column.render ? column.render(row) : row[column.id]}
+                  </TableCell>
+                ))}
+              </TableRow>
+            )
+          })}
         </TableBody>
       </BaseTable>
     </TableContainer>
