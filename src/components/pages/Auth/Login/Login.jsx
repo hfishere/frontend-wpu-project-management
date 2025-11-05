@@ -1,18 +1,28 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { Button, Paper, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router';
+import * as Yup from 'yup';
 
 import AuthLayout from '@/components/layouts/AuthLayout';
 import TextField from '@/components/ui/Forms/TextField';
 import services from '@/services';
 import session from '@/utils/session';
 
+
+const loginSchema = Yup.object({
+  email: Yup.string().required().email(),
+  password: Yup.string().required(),
+});
+
 const Login = () => {
-  const [setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
 
   const onSubmit = async (formValues) => {
     setLoading(true);
@@ -21,7 +31,7 @@ const Login = () => {
       session.setSession(response.data.data.access_token);
       navigate('/');
     } catch (error) {
-      console.error("login gagal:", error)
+      console.error('login gagal:', error);
     } finally {
       setLoading(false);
     }
@@ -50,7 +60,7 @@ const Login = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <TextField label={'Email'} control={control} name="email" />
-          <TextField label={'Password'} control={control} name="password" />
+          <TextField label={'Password'} control={control} name="password" secureText />
           <Button type="submit" variant="contained" fullWidth>
             Masuk ke Akun Anda
           </Button>

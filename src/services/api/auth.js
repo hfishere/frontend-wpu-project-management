@@ -1,11 +1,11 @@
-import network from "@/utils/network";
+import network from '@/utils/network';
 
 const auth = {
-    login(payload) {
-        return network.post('/auth/login', payload);
-    }
+  login(payload) {
+    return network.post('/auth/login', payload);
+  },
 
-    // signup
-}
+  // signup
+};
 
 export default auth;

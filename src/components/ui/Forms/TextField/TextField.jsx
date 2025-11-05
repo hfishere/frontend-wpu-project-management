@@ -1,4 +1,6 @@
-import { TextField as BaseTextField, Box } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 const TextField = ({
@@ -7,31 +9,57 @@ const TextField = ({
   label,
   defaultValue,
   helperText,
+  id,
+  secureText = false,
   ...props
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    setShowPassword(secureText)
+  }, [secureText])
+
   return (
     <Controller
       name={name}
       control={control}
       defaultValue={defaultValue}
-      render={({ field: { value, onChange, onBlur } }) => {
+      render={({
+        field: { value, onChange, onBlur },
+        fieldState: { error }
+      }) => {
         return (
-          <Box
+          <FormControl
             sx={{
               marginBottom: 2,
             }}
+            variant='outlined'
           >
-            <BaseTextField
+            <InputLabel htmlFor={id}>{label}</InputLabel>
+            <OutlinedInput
               {...props}
               fullWidth
+              type={showPassword ? 'password' : 'text'}
               label={label}
               variant="outlined"
               value={value ?? ''}
               onBlur={onBlur}
               onChange={onChange}
-              helperText={helperText}
+              error={Boolean(error)}
+              endAdornment={
+                secureText ? (
+                  <InputAdornment position='end'>
+                    <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ) : (
+                  <></>
+                )
+              }
             />
-          </Box>
+            <FormHelperText error={Boolean(error)}>{error?.message ? error?.message : helperText}</FormHelperText>
+          </FormControl>
         );
       }}
     />
