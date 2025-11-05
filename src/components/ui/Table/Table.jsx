@@ -11,17 +11,13 @@ import {
 } from '@mui/material';
 
 const Table = ({ columns, data, isLoading }) => {
-  if (!columns || !data || data.length === 0 && !isLoading) {
+  if (!columns || !data || (data.length === 0 && !isLoading)) {
     return <Box>Data tidak tersedia</Box>;
   }
 
   return (
     <TableContainer component={Paper}>
-      {
-        isLoading && (
-          <LinearProgress />
-        )
-      }
+      {isLoading && <LinearProgress />}
       <BaseTable sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
@@ -45,7 +41,7 @@ const Table = ({ columns, data, isLoading }) => {
                   </TableCell>
                 ))}
               </TableRow>
-            )
+            );
           })}
         </TableBody>
       </BaseTable>

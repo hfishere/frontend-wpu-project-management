@@ -1,27 +1,30 @@
 import { Box, Button, Link, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { useDebounce } from 'use-debounce';
 
 import SidebarLayout from '@/components/layouts/SidebarLayout';
+import TextField from '@/components/ui/Forms/TextField';
+import Pagination from '@/components/ui/Pagination';
 import Table from '@/components/ui/Table';
 import services from '@/services';
 import datetime from '@/utils/datetime';
-import TextField from '@/components/ui/Forms/TextField';
-import { useForm, useWatch } from 'react-hook-form';
-import { useDebounce } from 'use-debounce'
 
 const Projects = () => {
   const [isLoading, setLoading] = useState(false);
   const [boardsData, setBoardsData] = useState([]);
+  const [boardsMeta, setBoardsMeta] = useState({});
+  const [page, setPage] = useState(1);
 
   const { control } = useForm({
     defaultValues: {
-      search: ''
-    }
+      search: '',
+    },
   });
 
   const watchSearch = useWatch({
     control,
-    name: 'search'
+    name: 'search',
   });
 
   const [debounceSearch] = useDebounce(watchSearch, 1000);
@@ -30,22 +33,25 @@ const Projects = () => {
     const fetchBoardsData = async () => {
       setLoading(true);
       const response = await services.boards.myBoards({
-        filter: debounceSearch
+        filter: debounceSearch,
+        limit: 10,
+        page: page,
       });
       setBoardsData(response.data.data);
+      setBoardsMeta(response.data.meta);
       setLoading(false);
     };
 
     fetchBoardsData();
-  }, [debounceSearch]); // onMounted
+  }, [debounceSearch, page]); // onMounted
 
   return (
     <SidebarLayout
       pageTitle="Projects"
       breadcrumbs={[
         {
-          label: 'Daftar Proyek'
-        }
+          label: 'Daftar Proyek',
+        },
       ]}
     >
       <Stack>
@@ -54,7 +60,7 @@ const Projects = () => {
             control={control}
             label={'Cari nama proyek'}
             id="search"
-            name={"search"}
+            name={'search'}
             size="small"
           />
         </Box>
@@ -75,7 +81,9 @@ const Projects = () => {
             id: 'date',
             label: 'Tanggal dibuat',
             render(data) {
-              return <Box>{datetime.format(data.created_at, "DD/MM/YYYY")}</Box>;
+              return (
+                <Box>{datetime.format(data.created_at, 'DD/MM/YYYY')}</Box>
+              );
             },
           },
           {
@@ -92,6 +100,12 @@ const Projects = () => {
             },
           },
         ]}
+      />
+      <Pagination
+        count={boardsMeta.total_page}
+        onChange={(event, page) => {
+          setPage(page);
+        }}
       />
     </SidebarLayout>
   );
