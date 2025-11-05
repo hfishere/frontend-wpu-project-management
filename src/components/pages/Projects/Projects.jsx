@@ -1,28 +1,64 @@
-import { Box, Button, Link } from '@mui/material';
+import { Box, Button, Link, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 import SidebarLayout from '@/components/layouts/SidebarLayout';
 import Table from '@/components/ui/Table';
 import services from '@/services';
 import datetime from '@/utils/datetime';
+import TextField from '@/components/ui/Forms/TextField';
+import { useForm, useWatch } from 'react-hook-form';
+import { useDebounce } from 'use-debounce'
 
 const Projects = () => {
   const [isLoading, setLoading] = useState(false);
   const [boardsData, setBoardsData] = useState([]);
 
+  const { control } = useForm({
+    defaultValues: {
+      search: ''
+    }
+  });
+
+  const watchSearch = useWatch({
+    control,
+    name: 'search'
+  });
+
+  const [debounceSearch] = useDebounce(watchSearch, 1000);
+
   useEffect(() => {
     const fetchBoardsData = async () => {
       setLoading(true);
-      const response = await services.boards.myBoards();
+      const response = await services.boards.myBoards({
+        filter: debounceSearch
+      });
       setBoardsData(response.data.data);
       setLoading(false);
     };
 
     fetchBoardsData();
-  }, []); // onMounted
+  }, [debounceSearch]); // onMounted
 
   return (
-    <SidebarLayout pageTitle="Projects">
+    <SidebarLayout
+      pageTitle="Projects"
+      breadcrumbs={[
+        {
+          label: 'Daftar Proyek'
+        }
+      ]}
+    >
+      <Stack>
+        <Box>
+          <TextField
+            control={control}
+            label={'Cari nama proyek'}
+            id="search"
+            name={"search"}
+            size="small"
+          />
+        </Box>
+      </Stack>
       <Table
         isLoading={isLoading}
         data={boardsData}
