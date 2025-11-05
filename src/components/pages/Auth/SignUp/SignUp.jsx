@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
 
 import AuthLayout from '@/components/layouts/AuthLayout';
+import Dialog from '@/components/ui/Dialog';
 import TextField from '@/components/ui/Forms/TextField';
 import services from '@/services';
 
@@ -25,6 +26,14 @@ const signUpSchema = Yup.object({
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState({
+    title: '',
+    message: '',
+  });
+  const [dialogActions, setDialogActions] = useState([]);
+
   const navigate = useNavigate();
 
   const { control, handleSubmit } = useForm({
@@ -37,7 +46,20 @@ const SignUp = () => {
       await services.auth.signUp(formValues);
       navigate('/login');
     } catch (error) {
-      console.error('login gagal:', error);
+      setOpenDialog(true);
+      setDialogMessage({
+        title: 'Terjadi kesalahan',
+        message:
+          error?.response?.data?.message ?? 'Silahkan coba beberapa saat lagi.',
+      });
+      setDialogActions([
+        {
+          label: 'Mengerti',
+          onClick() {
+            setOpenDialog(false);
+          },
+        },
+      ]);
     } finally {
       setLoading(false);
     }
@@ -101,6 +123,7 @@ const SignUp = () => {
           </Button>
         </Stack>
       </Paper>
+      <Dialog open={openDialog} actions={dialogActions} {...dialogMessage} />
     </AuthLayout>
   );
 };
