@@ -62,7 +62,7 @@ const Projects = () => {
         pageTitle="Projects"
         breadcrumbs={[
           {
-            label: 'Daftar Proyek',
+            label: 'Projects',
           },
         ]}
       >

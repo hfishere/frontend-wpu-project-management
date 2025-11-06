@@ -4,7 +4,18 @@ import SidebarLayout from '@/components/layouts/SidebarLayout';
 
 const DetailProject = () => {
   return (
-    <SidebarLayout pageTitle="Project Abcdefg">
+    <SidebarLayout
+      pageTitle="Project Abcdefg"
+      breadcrumbs={[
+        {
+          label: 'Projects',
+          href: '/projects',
+        },
+        {
+          label: 'Detail Projects',
+        },
+      ]}
+    >
       <Paper
         sx={{
           padding: 2,
