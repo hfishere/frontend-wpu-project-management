@@ -9,6 +9,7 @@ import Login from './components/pages/Auth/Login';
 import SignUp from './components/pages/Auth/SignUp';
 import Dashboard from './components/pages/Dashboard';
 import DetailProject from './components/pages/Projects/DetailProject';
+import detailProjectLoader from './components/pages/Projects/DetailProject/DetailProject.loader';
 import Projects from './components/pages/Projects/Projects';
 import Settings from './components/pages/Settings';
 import SnackbarProvider from './components/ui/Snackbar';
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/projects/:id',
+        loader: detailProjectLoader,
         element: <DetailProject />,
       },
     ],
