@@ -1,4 +1,10 @@
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { createBrowserRouter, RouterProvider } from 'react-router';
@@ -64,7 +70,21 @@ const App = () => {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <SnackbarProvider>
           <CssBaseline />
-          <RouterProvider router={router} />
+          <RouterProvider
+            router={router}
+            fallbackElement={
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100vh',
+                }}
+              >
+                <CircularProgress />
+              </Box>
+            }
+          />
         </SnackbarProvider>
       </LocalizationProvider>
     </ThemeProvider>

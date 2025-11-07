@@ -24,7 +24,7 @@ const DetailProjectProvider = ({ children }) => {
   const [boardListData, setBoardListData] = useState([]);
   const [boardListWithCardsData, setBoardListWithCardsData] = useState([]);
 
-  const fetchBoardLists = async () => {
+  const fetchBoardLists = useCallback(async () => {
     try {
       setLoadingBoardLists(true);
 
@@ -69,7 +69,7 @@ const DetailProjectProvider = ({ children }) => {
     } finally {
       setLoadingBoardLists(false);
     }
-  };
+  }, [detailProjectData.public_id]);
 
   const getTaskItemsByListId = useCallback(
     (listId) => {
@@ -94,7 +94,7 @@ const DetailProjectProvider = ({ children }) => {
     if (detailProjectData.public_id) {
       fetchBoardLists();
     }
-  }, [detailProjectData.public_id]);
+  }, [detailProjectData.public_id, fetchBoardLists]);
 
   useEffect(() => {
     const fetchUpdateTaskItemPosition = async () => {
@@ -172,18 +172,24 @@ const DetailProjectProvider = ({ children }) => {
       }
     };
     fetchUpdateTaskItemPosition();
-  }, [updateTaskItemPosition]);
+  }, [
+    updateTaskItemPosition,
+    boardListData,
+    boardListWithCardsData,
+    detailProjectData.public_id,
+    fetchBoardLists,
+  ]); // default only updateTaskItemPosition
 
-  const fetchBoardMembers = async () => {
+  const fetchBoardMembers = useCallback(async () => {
     const response = await services.boards.getMembers(
       detailProjectData.public_id,
     );
     setMembers(response.data.data);
-  };
+  }, [detailProjectData.public_id]);
 
   useEffect(() => {
     fetchBoardMembers();
-  }, []);
+  }, [fetchBoardMembers]);
 
   return (
     <DetailProjectContext.Provider
