@@ -49,18 +49,22 @@ const useListSortableItem = ({ id, item }) => {
   return {
     detailProjectContext,
     taskItems,
-    isOver,
-    active,
-    over,
-    setNodeRefDroppable,
-    attributes,
-    listeners,
-    setNodeRefSortable,
-    transform,
-    transition,
     handleDeleteList,
     isShowConfirmDelete,
     setShowConfirmDelete,
+    droppable: {
+      isOver,
+      active,
+      over,
+      setNodeRefDroppable,
+    },
+    sortable: {
+      setNodeRefSortable,
+      attributes,
+      listeners,
+      transition,
+      transform,
+    },
   };
 };
 
