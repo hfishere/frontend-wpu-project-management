@@ -15,7 +15,7 @@ const useDetailProjectContainer = () => {
   const detailProjectData = useLoaderData();
   const detailProjectContext = useDetailProjectContext();
 
-  const boardListData = detailProjectContext.boardListData();
+  const boardListData = detailProjectContext.boardListData;
 
   const [activeDragItem, setActiveDragItem] = useState(null);
 

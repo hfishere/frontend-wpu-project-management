@@ -1,15 +1,17 @@
 import { Stack } from '@mui/material';
-import { useLoaderData } from 'react-router';
-
-import useDetailProjectContext from '../hooks/useDetailProjectContext';
 
 import CreateNewList from './CreateNewList';
+import ListSortableItem from './ListSortableItem';
 
 import SidebarLayout from '@/components/layouts/SidebarLayout';
+import useDetailProjectContainer from '../hooks/useDetailProjectContainer';
 
 const DetailProjectContainer = () => {
-  const detailProjectData = useLoaderData();
-  const detailProjectContext = useDetailProjectContext();
+  const {
+    boardListData,
+    detailProjectData,
+    detailProjectContext
+  } = useDetailProjectContainer();
 
   return (
     <SidebarLayout
@@ -25,16 +27,25 @@ const DetailProjectContainer = () => {
       ]}
     >
       <Stack
+        direction={'row'}
+        justifyContent={'flex-start'}
+        alignItems={'flex-start'}
+        gap={2}
+        pb={5}
         sx={{
-          height: 800,
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          direction: 'row',
-          gap: 2,
-          overflowX: 'auto',
-          pb: 5,
+          overflowX: 'auto'
         }}
       >
+        <ListSortableItem />
+        {
+          boardListData?.map((item) => (
+            <ListSortableItem 
+            key={item.public_id} 
+            id={item.public_id}
+            item={item}
+            />
+          ))
+        }
         <CreateNewList />
       </Stack>
     </SidebarLayout>
