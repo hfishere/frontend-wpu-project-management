@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { DetailProjectContext } from '..DetailProjectContextObject';
+import { DetailProjectContext } from '../DetailProjectContextObject';
 
 const useDetailProjectContext = () => {
   const detailProject = useContext(DetailProjectContext);
