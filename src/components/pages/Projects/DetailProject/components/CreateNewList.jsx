@@ -49,7 +49,7 @@ const CreateNewList = () => {
             </Button>
             <Button
               type="button"
-              variant="contained"
+              variant="outlined"
               size="small"
               onClick={handleCloseFormCreateList}
               disabled={isLoadingCreateList}
