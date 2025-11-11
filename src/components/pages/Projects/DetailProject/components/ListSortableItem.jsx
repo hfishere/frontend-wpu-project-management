@@ -6,12 +6,9 @@ import useListSortableItem from '../hooks/useListSortableItem';
 const ListSortableItem = ({ id, item }) => {
   const {
     sortable,
-    droppable,
-    detailProjectContext,
     handleDeleteList,
     isShowConfirmDelete,
     setShowConfirmDelete,
-    taskItems,
   } = useListSortableItem({ id, item });
   const renderDeleteList = () => {
     if (isShowConfirmDelete) {
