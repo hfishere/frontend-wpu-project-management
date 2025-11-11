@@ -3,7 +3,8 @@ import axios from 'axios';
 import session from './session';
 
 const network = axios.create({
-  baseURL: 'http://127.0.0.1:3030/',
+  baseURL: 'http://127.0.0.1:3030/', // using api from wpucourse
+  // baseURL: 'http://103.49.239.40:3030/', // using api from wpucourse
 });
 
 network.interceptors.request.use(
