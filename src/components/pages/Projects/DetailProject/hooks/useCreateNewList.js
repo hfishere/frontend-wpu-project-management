@@ -30,7 +30,7 @@ const useCreateNewList = () => {
   const handleOpenFormCreateList = () => setShowFormCreateList(true);
   const handleCloseFormCreateList = async () => {
     setShowFormCreateList(false);
-    setLoadingCreateList(true);
+    setLoadingCreateList(false);
     reset();
 
     await detailProjectContext.fetchBoardLists();
