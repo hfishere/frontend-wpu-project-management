@@ -81,6 +81,7 @@ const TaskItems = ({ listDroppable, listItem }) => {
             <TaskSortableItem
               key={item.public_id}
               id={item.public_id}
+              item={item}
               listId={listItem.public_id}
             />
           ))}
