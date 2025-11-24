@@ -15,7 +15,7 @@ const CreateNewTask = ({ listId }) => {
     handleOpenFormCreateNewTask,
     handleCloseFormCreateNewTask,
     onSubmit,
-  } = useCreateNewTask({ listId });
+  } = useCreateNewTask(listId);
 
   if (isShowFormCreateNewTask) {
     return (
