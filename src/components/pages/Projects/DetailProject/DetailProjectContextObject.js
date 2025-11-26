@@ -11,6 +11,7 @@ const defaultState = {
   boardListData: [],
   getTaskItemsByListId() {},
   async fetchBoardLists() {},
+  async fetchBoardMembers() {},
   isOver: false,
   setIsOver() {},
   getProjectInitials() {},
