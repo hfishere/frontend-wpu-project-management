@@ -12,7 +12,7 @@ const ListSortableItem = ({ id, item }) => {
     handleDeleteList,
     isShowConfirmDelete,
     setShowConfirmDelete,
-    taskItems
+    taskItems,
   } = useListSortableItem({ id, item });
   const renderDeleteList = () => {
     if (isShowConfirmDelete) {

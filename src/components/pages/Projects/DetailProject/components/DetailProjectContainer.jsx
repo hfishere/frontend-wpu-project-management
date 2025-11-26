@@ -13,10 +13,11 @@ import useDetailProjectContainer from '../hooks/useDetailProjectContainer';
 
 import CreateNewList from './CreateNewList';
 import ListSortableItem from './ListSortableItem';
+import ProjectInfo from './ProjectInfo';
+import TaskSortableItem from './TaskSortableItem';
 
 import SidebarLayout from '@/components/layouts/SidebarLayout';
 import { DRAG_CARD, DRAG_LIST } from '@/utils/constants';
-import TaskSortableItem from './TaskSortableItem';
 
 const DetailProjectContainer = () => {
   const {
@@ -40,7 +41,11 @@ const DetailProjectContainer = () => {
 
     if (activeDragItem && activeDragItem.type === DRAG_CARD) {
       return (
-        <TaskSortableItem listId={activeDragItem.list_public_id} id={activeDragItem.public_id} item={activeDragItem} /> // bikin duplikat atau efek kaca
+        <TaskSortableItem
+          listId={activeDragItem.list_public_id}
+          id={activeDragItem.public_id}
+          item={activeDragItem}
+        /> // bikin duplikat atau efek kaca
       );
     }
 
@@ -66,6 +71,7 @@ const DetailProjectContainer = () => {
         onDragCancel={handleDragCancel}
         sensors={sensors}
       >
+        <ProjectInfo />
         <SortableContext
           items={boardListDataMapPublicIds}
           strategy={horizontalListSortingStrategy}
