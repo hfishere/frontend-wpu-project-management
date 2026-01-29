@@ -7,7 +7,7 @@ const TaskSortableItem = ({ id, item, listId }) => {
   const {
     attributes,
     detailProjectContext,
-    // handleClickTaskitem,
+    handleClickTaskItem,
     isDragging,
     listeners,
     setNodeRef,
@@ -25,6 +25,7 @@ const TaskSortableItem = ({ id, item, listId }) => {
         opacity: isDragging ? 0 : 1,
       }}
       elevation={2}
+      onClick={handleClickTaskItem}
       {...attributes}
       {...listeners}
     >
